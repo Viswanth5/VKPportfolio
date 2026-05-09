@@ -6,6 +6,9 @@
     <meta name="description" content="Viswanth Kantha Pandiyan S - AI/ML Engineer & Product Developer.">
     <title>Viswanth's AI | Neural Core</title>
 
+    <!-- Favicon (monochrome "V" circle) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22><circle cx=%2216%22 cy=%2216%22 r=%2214%22 fill=%22none%22 stroke=%22white%22 stroke-width=%222%22/><text x=%2216%22 y=%2222%22 text-anchor=%22middle%22 font-size=%2218%22 font-family=%22sans-serif%22 fill=%22white%22>V</text></svg>">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +16,6 @@
 
     <style>
         :root {
-            /* DARK MODE (DEFAULT) */
             --bg-color: #0a0a0a;
             --card-bg: rgba(20, 20, 20, 0.95);
             --text-primary: #FFFFFF;
@@ -26,11 +28,10 @@
             --font-code: 'JetBrains Mono', monospace;
             --status-green: #00ff88;
             --gold: #FFD700;
-            --highlight-color: rgba(255, 255, 255, 0.7); /* Semi White */
+            --highlight-color: rgba(255, 255, 255, 0.7);
         }
 
         body.light-mode {
-            /* LIGHT MODE OVERRIDES */
             --bg-color: #F0F2F5;
             --card-bg: #FFFFFF;
             --text-primary: #000000;
@@ -41,12 +42,18 @@
             --input-focus-bg: rgba(0, 0, 0, 0.1);
             --status-green: #00aa55;
             --gold: #b8860b;
-            --highlight-color: rgba(0, 0, 0, 0.7); /* Semi Black for Light Mode */
+            --highlight-color: rgba(0, 0, 0, 0.7);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        /* Custom Cursor Handling */
+
+        /* Focus ring for keyboard navigation */
+        :focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--accent-color);
+            border-radius: 4px;
+        }
+
         @media (hover: hover) and (pointer: fine) {
             body { cursor: none; }
         }
@@ -63,11 +70,9 @@
 
         /* CURSOR */
         .cursor-dot, .cursor-outline {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             transform: translate(-50%, -50%);
-            pointer-events: none;
-            z-index: 9999;
+            pointer-events: none; z-index: 9999;
             display: none;
         }
         @media (hover: hover) and (pointer: fine) {
@@ -109,23 +114,15 @@
         .cursor-blink { animation: blink 0.8s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* BUTTON - ALWAYS VISIBLE */
         #access-btn {
             margin-top: 20px;
-            background: transparent;
-            border: 1px solid var(--text-primary);
-            color: var(--text-primary);
-            padding: 12px 30px;
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            opacity: 1;                    /* always visible */
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transform: translateY(0);      /* no hidden offset */
+            background: transparent; border: 1px solid var(--text-primary);
+            color: var(--text-primary); padding: 12px 30px;
+            font-family: var(--font-code); font-size: 0.9rem;
+            opacity: 1; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transform: translateY(0);
         }
-
         @media (hover: hover) and (pointer: fine) { #access-btn { cursor: none; } }
         #access-btn:hover { background: var(--text-primary); color: var(--bg-color); }
 
@@ -163,22 +160,19 @@
 
         .command-wrapper { position: relative; }
         #ai-command {
-            background: var(--input-bg);
-            border: 1px solid var(--border-color);
+            background: var(--input-bg); border: 1px solid var(--border-color);
             color: var(--text-primary); padding: 8px 16px; font-family: var(--font-code);
             font-size: 0.85rem; width: 250px; transition: 0.3s, background-color 0.3s; border-radius: 4px; cursor: text;
         }
         @media (hover: hover) and (pointer: fine) { #ai-command { cursor: none; } }
-        #ai-command:focus {
-            outline: none; border-color: var(--text-primary); background: var(--input-focus-bg); width: 300px;
-        }
+        #ai-command:focus { outline: none; border-color: var(--text-primary); background: var(--input-focus-bg); width: 300px; }
         #ai-command::placeholder { color: var(--text-secondary); opacity: 0.6; }
 
         .grid-container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
 
         .module {
             background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 24px; transition: background-color 0.4s, border-color 0.4s, transform 0.3s; 
+            border-radius: 12px; padding: 24px; transition: background-color 0.4s, border-color 0.4s, transform 0.3s;
             position: relative; overflow: hidden; display: flex; flex-direction: column;
         }
         .module:hover { border-color: var(--text-secondary); transform: translateY(-2px); }
@@ -189,7 +183,6 @@
         }
         .module-header::before { content: '■'; font-size: 8px; color: var(--accent-color); }
 
-        /* Grid Spans */
         .mod-identity { grid-column: span 12; }
         @media (min-width: 768px) { .mod-identity { grid-column: span 4; } }
         .mod-status { grid-column: span 12; }
@@ -203,7 +196,6 @@
         .mod-projects { grid-column: span 12; }
         .mod-contact { grid-column: span 12; }
 
-        /* Profile */
         .profile-container { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
         .avatar-wrapper {
             position: relative; width: 100px; height: 100px; border-radius: 50%; overflow: hidden;
@@ -219,19 +211,13 @@
         .role { color: var(--text-secondary); font-size: 0.9rem; }
         .detail-text { font-size: 0.8rem; color: var(--text-secondary); margin-top:5px; font-family: var(--font-code); }
 
-        /* Education & Experience Items */
         .timeline-item { margin-bottom: 12px; border-left:1px solid var(--border-color); padding-left: 12px; position: relative; }
         .timeline-item::before { content: ''; width: 6px; height: 6px; background: var(--text-primary); border-radius: 50%; position: absolute; left: -3.5px; top: 6px; }
         .timeline-title { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); }
         .timeline-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
-        
-        /* Highlight Class */
-        .highlight-text {
-            color: var(--highlight-color);
-            font-weight: 600;
-        }
-        
-        /* Specific Styles for Upcoming Projects */
+
+        .highlight-text { color: var(--highlight-color); font-weight: 600; }
+
         .upcoming-item {
             background: rgba(128,128,128,0.05); border: 1px dashed var(--border-color);
             padding: 12px; border-radius: 6px; margin-bottom: 10px;
@@ -240,7 +226,6 @@
         .upcoming-tag { font-size: 0.65rem; background: var(--accent-color); color: var(--bg-color); padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
         .upcoming-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px; }
 
-        /* Status */
         .status-row { display: flex; flex-direction: column; gap: 15px; height: 100%; justify-content: center;}
         @media (min-width: 768px) { .status-row { flex-direction: row; justify-content: space-between; align-items: center; } }
         .status-content h3 { font-size: 1.2rem; font-weight: 500; margin-bottom: 4px; }
@@ -254,13 +239,10 @@
             text-shadow: 0 0 5px var(--status-green);
             transition: background-color 0.3s, color 0.3s;
         }
-        body.light-mode .status-badge {
-            background: rgba(0, 170, 85, 0.15);
-            text-shadow: none;
-        }
+        @media (min-width: 768px) { .status-badge { font-size: 0.85rem; padding: 6px 16px; } }
+        body.light-mode .status-badge { background: rgba(0, 170, 85, 0.15); text-shadow: none; }
         .status-mode { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-secondary); }
 
-        /* About */
         .about-text { font-size: 1.05rem; margin-bottom: 15px; color: var(--text-primary); line-height: 1.6; }
         .tag-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
         .tag { font-size: 0.75rem; padding: 4px 10px; border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-secondary); transition: 0.2s; background: transparent; }
@@ -273,7 +255,6 @@
         .thinking-dot { width: 6px; height: 6px; background: var(--text-primary); border-radius: 50%; animation: pulse 1s infinite; }
         @keyframes pulse { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
 
-        /* Projects */
         .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .project-card {
             background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px;
@@ -282,7 +263,7 @@
             cursor: pointer;
         }
         @media (hover: hover) and (pointer: fine) { .project-card { cursor: none; } }
-        
+
         body.light-mode .project-card:hover { background: #e6e6e6; border-color: var(--text-primary); }
         body:not(.light-mode) .project-card:hover { background: var(--bg-color); border-color: var(--text-primary); }
 
@@ -294,7 +275,6 @@
         .project-desc { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4; }
         .project-tech { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-secondary); }
 
-        /* Contact */
         .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
         .contact-item {
             border: 1px solid var(--border-color); padding: 15px; border-radius: 6px;
@@ -323,7 +303,7 @@
             display: flex; justify-content: center; align-items: center;
         }
         body.light-mode .modal-overlay { background: rgba(255,255,255,0.8); }
-        
+
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
         .modal-content {
             background: var(--card-bg); width: 90%; max-width: 600px; border: 1px solid var(--border-color);
@@ -339,6 +319,19 @@
         .modal-body { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px; }
         .modal-btn { background: var(--text-primary); color: var(--bg-color); padding: 10px 20px; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
 
+        /* Back to Top Button */
+        #back-to-top {
+            position: fixed; bottom: 25px; left: 25px; z-index: 1400;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            color: var(--text-primary); font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s;
+            cursor: pointer;
+        }
+        #back-to-top.visible { opacity: 1; pointer-events: auto; }
+        #back-to-top:hover { background: var(--text-primary); color: var(--bg-color); transform: translateY(-3px); }
+
         /* Terminal */
         .terminal-window {
             position: fixed; bottom: 20px; right: 20px; width: 380px; height: 260px;
@@ -346,32 +339,48 @@
             z-index: 1500; display: none; flex-direction: column; padding: 10px;
             font-family: var(--font-code); font-size: 0.8rem; color: var(--text-secondary);
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
-            transition: background-color 0.4s;
+            transition: background-color 0.4s, height 0.3s;
         }
+        .terminal-window.minimized { height: 40px; overflow: hidden; }
         @media (max-width: 500px) { .terminal-window { width: 95%; right: 2.5%; bottom: 10px; } }
 
-        .terminal-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 5px; font-size: 0.7rem; color: var(--text-secondary); }
+        .terminal-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 5px;
+            font-size: 0.7rem; color: var(--text-secondary); cursor: pointer; user-select: none;
+        }
+        .terminal-header-btns { display: flex; gap: 8px; align-items: center; }
+        .terminal-min-btn {
+            background: none; border: none; color: var(--text-secondary);
+            font-family: var(--font-code); font-size: 0.9rem; cursor: pointer; padding: 0 4px;
+        }
+        .terminal-min-btn:hover { color: var(--text-primary); }
         .terminal-body { flex: 1; overflow-y: auto; margin-bottom: 5px; padding-right: 4px; }
         .terminal-input { background: transparent; border: none; color: var(--text-primary); font-family: var(--font-code); width: 100%; outline: none; }
-        .cmd-response { color: var(--text-secondary); margin-bottom: 4px; word-break: break-all; }
+        .cmd-response { color: var(--text-secondary); margin-bottom: 4px; word-break: break-all; white-space: pre-wrap; }
         .cmd-prompt { color: var(--status-green); margin-right: 5px; }
 
         .fade-in { animation: fadeInUp 0.6s ease-out forwards; opacity: 0; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; opacity: 0.8; pointer-events: none; }
     </style>
 </head>
 <body>
+
+    <canvas id="bg-canvas"></canvas>
 
     <!-- CURSOR -->
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
+    <!-- BACK TO TOP -->
+    <button id="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
+
     <!-- ENTRY SCREEN -->
     <section id="entry-screen">
         <div style="text-align: center;">
             <div class="loader-text" id="typing-text">INITIALIZING VISWANTH'S AI<span class="cursor-blink">_</span></div>
-            <!-- Button always visible, no waiting for typing animation -->
             <button id="access-btn">ACCESS SYSTEM</button>
         </div>
     </section>
@@ -382,11 +391,11 @@
             <div class="brand">Viswanth's AI<span class="brand-highlight">// neural core</span></div>
             <div class="header-controls">
                 <div class="system-metrics">
-                    CPU: <span class="metric-val">4%</span> | Memory: <span class="metric-val">12GB</span> | Status: <span class="metric-val" style="color: var(--status-green);">ONLINE</span>
+                    CPU: <span class="metric-val" id="cpu-val">4%</span> | Memory: <span class="metric-val" id="mem-val">12GB</span> | Status: <span class="metric-val" style="color: var(--status-green);">ONLINE</span>
                 </div>
                 <div class="terminal-toggle" id="terminal-btn" title="System Terminal (Ctrl+Shift+T)">_&gt;</div>
                 <div class="command-wrapper">
-                    <input type="text" id="ai-command" placeholder="Cmd: 'projects' or 'about'..." autocomplete="off">
+                    <input type="text" id="ai-command" placeholder="Cmd: 'projects' or 'about'..." autocomplete="off" aria-label="Quick navigation command input">
                 </div>
             </div>
         </header>
@@ -401,9 +410,9 @@
                     </div>
                     <div>
                         <div class="name">Viswanth Kantha<br>Pandiyan S</div>
-                        <div class="role">Full Stack Developer | AI Engineer</div>
+                        <div class="role"> AI / ML Engineer</div>
                     </div>
-                    <div class="detail-text">🎂 Dec 14, 2003 | 📍 Madurai, India</div>
+                    <div class="detail-text">🎂 Dec 14, 2005 | 📍 Madurai, India</div>
                 </div>
             </div>
 
@@ -425,14 +434,14 @@
                 </div>
             </div>
 
-            <!-- ABOUT / CORE OBJECTIVE (TAG UPDATED) -->
+            <!-- ABOUT / CORE OBJECTIVE (REFINED) -->
             <div class="module mod-about fade-in" style="animation-delay: 0.3s;">
                 <div class="module-header">AI Engine (Core Objective)</div>
-                <p class="about-text">I build scalable Full Stack applications and AI systems. Specialized in designing decision systems that don't just show data — but understand, explain, and act on it and stay focused upon my goals towards growth and sucess.</p>
+                <p class="about-text">I design <strong>Agentic AI</strong> and <strong>Generative AI</strong> systems that don't just analyse data — they understand, explain, and act. Focused on building intelligent decision systems that drive real‑world impact.</p>
                 <div class="tag-group">
-                    <span class="tag">Full Stack</span>
-                    <span class="tag">AI/ML Development</span>  <!-- Replaced React/Node.js -->
-                    <span class="tag">AI Integration</span>
+                    <span class="tag">Generative AI</span>
+                    <span class="tag">AI/ML Development</span>
+                    <span class="tag">Computer Vision</span>
                 </div>
                 <div class="ai-thinking-container">
                     <div class="thinking-dot"></div>
@@ -485,17 +494,11 @@
             <div class="module mod-upcoming fade-in" style="animation-delay: 0.6s;">
                 <div class="module-header">R&D Lab (Upcoming)</div>
                 <div class="upcoming-item">
-                    <div class="upcoming-title">
-                        Agricultural AI Analysis
-                        <span class="upcoming-tag">Research</span>
-                    </div>
+                    <div class="upcoming-title">Agricultural AI Analysis <span class="upcoming-tag">Research</span></div>
                     <div class="upcoming-desc">Developing AI models for crop analysis and soil prediction optimization.</div>
                 </div>
                 <div class="upcoming-item">
-                    <div class="upcoming-title">
-                        AI-powered Folder Builder
-                        <span class="upcoming-tag">Dev</span>
-                    </div>
+                    <div class="upcoming-title">AI-powered Folder Builder <span class="upcoming-tag">Dev</span></div>
                     <div class="upcoming-desc">An intelligent automated system for organizing and structuring file directories.</div>
                 </div>
             </div>
@@ -518,20 +521,19 @@
             <div class="module mod-projects fade-in" style="animation-delay: 0.8s;">
                 <div class="module-header">Deployment Logs (High Priority)</div>
                 <div class="project-grid">
-                    <div class="project-card" onclick="window.openModal('Finguard AI', 'AI-powered fintech compliance system with anomaly detection, YOLO-based KYC verification, and LLM validation.', 'Python • YOLO • OCR • Gemini • ML', 'https://github.com/Viswanth5')"><div class="project-title">Finguard AI <span>v1.0</span></div><div class="project-desc">AI-powered fintech compliance system with anomaly detection, YOLO-based KYC verification, and LLM validation.</div><div class="project-tech">Python • YOLO • OCR • Gemini • ML</div></div>
-                    <div class="project-card" onclick="window.openModal('Patient X', 'Privacy-first AI + Blockchain healthcare marketplace with anonymization, validation, and dataset engineering.', 'AI • Blockchain • Data Privacy • Validation', 'https://patient-x.vercel.app/')"><div class="project-title">Patient X <span>Live</span></div><div class="project-desc">Privacy-first AI + Blockchain healthcare marketplace with anonymization, validation, and dataset engineering.</div><div class="project-tech">AI • Blockchain • Data Privacy • Validation</div></div>
-                    <div class="project-card" onclick="window.openModal('Tribal Earth 360', 'AI-based Decision Support System for land planning using spatial data and governance intelligence.', 'Python • GIS • DSS • AI', 'https://tribal-earth-360.vercel.app/')"><div class="project-title">Tribal Earth 360 <span>SIH</span></div><div class="project-desc">AI-based Decision Support System for land planning using spatial data and governance intelligence.</div><div class="project-tech">Python • GIS • DSS • AI</div></div>
-                    <div class="project-card" onclick="window.openModal('Custom Dashboard Builder', 'Drag-and-drop dashboard system with real-time data, Supabase backend, and AI-generated insights.', 'Supabase • JS • Charts • AI Insights', 'https://halleyx-sage.vercel.app/')"><div class="project-title">Custom Dashboard Builder <span>AI</span></div><div class="project-desc">Drag-and-drop dashboard system with real-time data, Supabase backend, and AI-generated insights.</div><div class="project-tech">Supabase • JS • Charts • AI Insights</div></div>
-                    <div class="project-card" onclick="window.openModal('Skyline Digital Services', 'Developed a clean, responsive static website for a digital services company with modern UI design.', 'HTML • CSS • JS • UI Design', 'https://skylinedigitalservicess.vercel.app/')"><div class="project-title">Skyline Digital Services <span>Client</span></div><div class="project-desc">Developed a clean, responsive static website for a digital services company with modern UI design.</div><div class="project-tech">HTML • CSS • JS • UI Design</div></div>
-                    <div class="project-card" onclick="window.openModal('Gym Management UI', 'Interactive fitness website with BMI calculator, dynamic UI, and multiple user-focused features.', 'JavaScript • UI/UX • Calculator Logic', 'https://aayshma.vercel.app/')"><div class="project-title">Gym Management UI <span>Dynamic</span></div><div class="project-desc">Interactive fitness website with BMI calculator, dynamic UI, and multiple user-focused features.</div><div class="project-tech">JavaScript • UI/UX • Calculator Logic</div></div>
-                    <div class="project-card" onclick="window.openModal('Framer Portfolio', 'Personal portfolio built using Framer showcasing design thinking, responsiveness, and UI systems.', 'Framer • UI/UX • Design Systems', 'https://viswanthkp.framer.website/')"><div class="project-title">Framer Portfolio <span>Design</span></div><div class="project-desc">Personal portfolio built using Framer showcasing design thinking, responsiveness, and UI systems.</div><div class="project-tech">Framer • UI/UX • Design Systems</div></div>
+                    <div class="project-card" title="Click to view details" onclick="window.openModal('Finguard AI', 'AI-powered fintech compliance system with anomaly detection, YOLO-based KYC verification, and LLM validation.', 'Python • YOLO • OCR • Gemini • ML', 'https://github.com/Viswanth5')"><div class="project-title">Finguard AI <span>v1.0</span></div><div class="project-desc">AI-powered fintech compliance system with anomaly detection, YOLO-based KYC verification, and LLM validation.</div><div class="project-tech">Python • YOLO • OCR • Gemini • ML</div></div>
+                    <div class="project-card" title="Click to view details" onclick="window.openModal('Patient X', 'Privacy-first AI + Blockchain healthcare marketplace with anonymization, validation, and dataset engineering.', 'AI • Blockchain • Data Privacy • Validation', 'https://patient-x.vercel.app/')"><div class="project-title">Patient X <span>Live</span></div><div class="project-desc">Privacy-first AI + Blockchain healthcare marketplace with anonymization, validation, and dataset engineering.</div><div class="project-tech">AI • Blockchain • Data Privacy • Validation</div></div>
+                    <div class="project-card" title="Click to view details" onclick="window.openModal('Tribal Earth 360', 'AI-based Decision Support System for land planning using spatial data and governance intelligence.', 'Python • GIS • DSS • AI', 'https://tribal-earth-360.vercel.app/')"><div class="project-title">Tribal Earth 360 <span>SIH</span></div><div class="project-desc">AI-based Decision Support System for land planning using spatial data and governance intelligence.</div><div class="project-tech">Python • GIS • DSS • AI</div></div>
+                    <div class="project-card" title="Click to view details" onclick="window.openModal('Custom Dashboard Builder', 'Drag-and-drop dashboard system with real-time data, Supabase backend, and AI-generated insights.', 'Supabase • JS • Charts • AI Insights', 'https://halleyx-sage.vercel.app/')"><div class="project-title">Custom Dashboard Builder <span>AI</span></div><div class="project-desc">Drag-and-drop dashboard system with real-time data, Supabase backend, and AI-generated insights.</div><div class="project-tech">Supabase • JS • Charts • AI Insights</div></div>
+                    <div class="project-card" title="Click to view details" onclick="window.openModal('Skyline Digital Services', 'Developed a clean, responsive static website for a digital services company with modern UI design.', 'HTML • CSS • JS • UI Design', 'https://skylinedigitalservicess.vercel.app/')"><div class="project-title">Skyline Digital Services <span>Client</span></div><div class="project-desc">Developed a clean, responsive static website for a digital services company with modern UI design.</div><div class="project-tech">HTML • CSS • JS • UI Design</div></div>
+                    <div class="project-card" title="Click to view details" onclick="window.openModal('Gym Management UI', 'Interactive fitness website with BMI calculator, dynamic UI, and multiple user-focused features.', 'JavaScript • UI/UX • Calculator Logic', 'https://aayshma.vercel.app/')"><div class="project-title">Gym Management UI <span>Dynamic</span></div><div class="project-desc">Interactive fitness website with BMI calculator, dynamic UI, and multiple user-focused features.</div><div class="project-tech">JavaScript • UI/UX • Calculator Logic</div></div>
+                    <div class="project-card" title="Click to view details" onclick="window.openModal('Framer Portfolio', 'Personal portfolio built using Framer showcasing design thinking, responsiveness, and UI systems.', 'Framer • UI/UX • Design Systems', 'https://viswanthkp.framer.website/')"><div class="project-title">Framer Portfolio <span>Design</span></div><div class="project-desc">Personal portfolio built using Framer showcasing design thinking, responsiveness, and UI systems.</div><div class="project-tech">Framer • UI/UX • Design Systems</div></div>
                 </div>
             </div>
 
             <div class="module mod-contact fade-in" style="animation-delay: 0.9s;">
                 <div class="module-header">Uplink / Connect</div>
-                <!-- IMPORTANT: Ensure ViswanthResume.pdf is in the same folder as this HTML file -->
-                <a href="ViswanthResume.pdf" target="_blank" class="resume-btn" title="View Resume (PDF)">
+                <a href="ViswanthResume.pdf" download class="resume-btn" title="Download Resume (PDF)">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>View / Download Resume
                 </a>
                 <div class="contact-grid">
@@ -555,152 +557,227 @@
         </div>
     </div>
     <div class="terminal-window" id="terminal">
-        <div class="terminal-header">
+        <div class="terminal-header" id="terminal-header">
             <span>VISWANTH-OS v9.0</span>
-            <span style="cursor:pointer" onclick="document.getElementById('terminal').style.display='none'">✕</span>
+            <div class="terminal-header-btns">
+                <button class="terminal-min-btn" id="terminal-min-btn" title="Minimize Terminal" aria-label="Minimize terminal">–</button>
+                <span style="cursor:pointer" onclick="document.getElementById('terminal').style.display='none'" title="Close Terminal" aria-label="Close terminal">✕</span>
+            </div>
         </div>
         <div class="terminal-body" id="terminal-output">
-            <div class="cmd-response">Welcome to Viswanth's AI terminal.</div>
-            <div class="cmd-response">Type 'help' for available commands.</div>
+            <!-- Welcome messages are added dynamically now -->
         </div>
         <div style="display: flex; align-items: center; margin-top: 5px;">
             <span class="cmd-prompt">></span>
-            <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false">
+            <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false" aria-label="Terminal input">
         </div>
     </div>
 
     <script>
+        // ---------- 0. CANVAS WITH VISIBILITY PAUSE ----------
+        const canvas = document.getElementById('bg-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, animFrameId;
+        const gridSize = 50, speed = 2.5;
+        let entities = [];
+
+        class Entity {
+            constructor(type) {
+                this.type = type;
+                this.x = Math.random() * window.innerWidth;
+                this.y = Math.random() * window.innerHeight;
+                this.vx = (Math.random() - 0.5) * speed;
+                this.vy = (Math.random() - 0.5) * speed;
+                this.radius = gridSize / 2 - 2;
+                this.mouthOpen = 0;
+                this.mouthSpeed = 0.2;
+            }
+            update(target) {
+                if (target) {
+                    const dx = target.x - this.x, dy = target.y - this.y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist > 1) {
+                        if (this.type === 'ghost') { this.vx = (dx/dist)*speed; this.vy = (dy/dist)*speed; }
+                        else { this.vx = -(dx/dist)*speed; this.vy = -(dy/dist)*speed; }
+                    }
+                }
+                this.x += this.vx; this.y += this.vy;
+                if (this.x > width) this.x = 0; if (this.x < 0) this.x = width;
+                if (this.y > height) this.y = 0; if (this.y < 0) this.y = height;
+                if (this.type === 'pacman') { this.mouthOpen += this.mouthSpeed; if (this.mouthOpen > 0.4 || this.mouthOpen < 0) this.mouthSpeed *= -1; }
+            }
+            draw() {
+                const isLight = document.body.classList.contains('light-mode');
+                ctx.strokeStyle = isLight ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.15)';
+                ctx.lineWidth = 2; ctx.fillStyle = ctx.strokeStyle;
+                if (this.type === 'pacman') {
+                    const angle = Math.atan2(this.vy, this.vx);
+                    ctx.save(); ctx.translate(this.x, this.y); ctx.rotate(angle);
+                    ctx.beginPath(); ctx.arc(0, 0, this.radius, 0.2*Math.PI + this.mouthOpen, 1.8*Math.PI - this.mouthOpen); ctx.lineTo(0,0); ctx.fill(); ctx.stroke();
+                    ctx.restore();
+                } else {
+                    const r = this.radius;
+                    ctx.beginPath(); ctx.arc(this.x, this.y-4, r, Math.PI, 0); ctx.lineTo(this.x+r, this.y+r);
+                    ctx.lineTo(this.x+r/3, this.y+r-4); ctx.lineTo(this.x-r/3, this.y+r);
+                    ctx.lineTo(this.x-r, this.y+r-4); ctx.lineTo(this.x-r, this.y+r); ctx.stroke();
+                    ctx.beginPath(); ctx.arc(this.x-r/2.5, this.y-4, 2, 0, Math.PI*2); ctx.arc(this.x+r/2.5, this.y-4, 2, 0, Math.PI*2); ctx.fill();
+                }
+            }
+        }
+
+        function resize() { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; }
+        function initEntities() { entities = [new Entity('pacman')]; for(let i=0;i<3;i++) entities.push(new Entity('ghost')); }
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            const isLight = document.body.classList.contains('light-mode');
+            const dotColor = isLight ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)';
+            ctx.fillStyle = dotColor;
+            for (let x = 0; x <= width; x += gridSize) for (let y = 0; y <= height; y += gridSize) ctx.fillRect(x-1, y-1, 2, 2);
+            const pacman = entities.find(e => e.type === 'pacman'), ghosts = entities.filter(e => e.type === 'ghost');
+            if (pacman) {
+                let closest = null, minDist = Infinity;
+                ghosts.forEach(g => { const d = Math.hypot(g.x-pacman.x, g.y-pacman.y); if(d<minDist){ minDist=d; closest=g; } });
+                if (closest) { const dx = pacman.x-closest.x, dy = pacman.y-closest.y, dist = Math.sqrt(dx*dx+dy*dy); if(dist>0){ pacman.vx = (dx/dist)*speed; pacman.vy = (dy/dist)*speed; } }
+                pacman.update(null); pacman.draw();
+            }
+            ghosts.forEach(g => { g.update(pacman); g.draw(); });
+            animFrameId = requestAnimationFrame(animate);
+        }
+
+        // Pause canvas when hidden or modal open
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) cancelAnimationFrame(animFrameId);
+            else animFrameId = requestAnimationFrame(animate);
+        });
+
         // ---------- 1. SMOOTH CURSOR ----------
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorOutline = document.querySelector('.cursor-outline');
+        const cursorDot = document.querySelector('.cursor-dot'), cursorOutline = document.querySelector('.cursor-outline');
         let mouseX = 0, mouseY = 0;
-        
         if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
             window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
-            function updateCursor() {
-                cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-                cursorOutline.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-                requestAnimationFrame(updateCursor);
-            }
-            requestAnimationFrame(updateCursor);
-
-            document.querySelectorAll('a, button, input, .project-card, .module, .terminal-toggle, .theme-toggle').forEach(el => {
+            (function updateCursor() { cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`; cursorOutline.style.transform = `translate(${mouseX}px, ${mouseY}px)`; requestAnimationFrame(updateCursor); })();
+            document.querySelectorAll('a, button, input, .project-card, .module, .terminal-toggle').forEach(el => {
                 el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
                 el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
             });
         }
 
-        // ---------- 2. MINIMAL AUDIO ENGINE ----------
+        // ---------- 2. AUDIO ENGINE ----------
         let audioCtx;
-        function initAudio() {
-            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-        }
+        function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)(); if (audioCtx.state==='suspended') audioCtx.resume(); }
         function playClickSound() {
             if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
-            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
-            osc.start(audioCtx.currentTime);
-            osc.stop(audioCtx.currentTime + 0.05);
+            osc.type='sine'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime+0.05);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+0.05);
+            osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime+0.05);
         }
         function playBootSound() {
             if (!audioCtx) return;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
+            const osc = audioCtx.createOscillator(), gain = audioCtx.createGain();
             osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.type = 'sine';
-            const now = audioCtx.currentTime;
-            osc.frequency.setValueAtTime(300, now);
-            osc.frequency.linearRampToValueAtTime(800, now + 0.2);
-            gain.gain.setValueAtTime(0.02, now);
-            gain.gain.linearRampToValueAtTime(0.0, now + 0.4);
-            osc.start(now); osc.stop(now + 0.4);
+            osc.type='sine'; const now=audioCtx.currentTime;
+            osc.frequency.setValueAtTime(300, now); osc.frequency.linearRampToValueAtTime(800, now+0.2);
+            gain.gain.setValueAtTime(0.02, now); gain.gain.linearRampToValueAtTime(0.0, now+0.4);
+            osc.start(now); osc.stop(now+0.4);
         }
+        document.body.addEventListener('click', ()=>initAudio(), {once:true});
+        document.querySelectorAll('button, .project-card, .contact-item, .resume-btn, .terminal-toggle').forEach(btn => btn.addEventListener('click', ()=>playClickSound()));
 
-        document.body.addEventListener('click', () => initAudio(), { once: true });
-
-        document.querySelectorAll('button, .project-card, .contact-item, .resume-btn, .terminal-toggle').forEach(btn => {
-            btn.addEventListener('click', () => { playClickSound(); });
-        });
-
-        // ---------- 3. LOADER & ENTRY (NO OPACITY WAIT) ----------
-        const entryScreen = document.getElementById('entry-screen');
-        const typingText = document.getElementById('typing-text');
-        const accessBtn = document.getElementById('access-btn');
-        const dashboard = document.getElementById('main-dashboard');
-        const fullText = "INITIALIZING VISWANTH'S AI";
-        let i = 0;
-        function typeWriter() {
-            if (i < fullText.length) {
-                typingText.innerHTML = fullText.substring(0, i+1) + '<span class="cursor-blink">_</span>';
-                i++; setTimeout(typeWriter, 50);
-            }
-            // NO VISIBLE CLASS NEEDED – button is already visible
+        // ---------- 3. DYNAMIC SYSTEM METRICS ----------
+        const cpuVal = document.getElementById('cpu-val'), memVal = document.getElementById('mem-val');
+        const cores = navigator.hardwareConcurrency || 8;
+        function updateMetrics() {
+            const cpu = Math.floor(Math.random() * 15 + 2);
+            const mem = (Math.random() * 4 + 10).toFixed(1);
+            cpuVal.textContent = cpu + '%';
+            memVal.textContent = mem + 'GB / ' + (cores*2) + 'GB';
         }
-        accessBtn.addEventListener('click', () => {
+        setInterval(updateMetrics, 2000);
+        updateMetrics();
+
+        // ---------- 4. LOADER & ENTRY ----------
+        const entryScreen=document.getElementById('entry-screen'), typingText=document.getElementById('typing-text'), accessBtn=document.getElementById('access-btn'), dashboard=document.getElementById('main-dashboard');
+        const fullText = "INITIALIZING VISWANTH'S AI"; let i=0;
+        function typeWriter() { if(i<fullText.length){ typingText.innerHTML = fullText.substring(0,i+1)+'<span class="cursor-blink">_</span>'; i++; setTimeout(typeWriter,50); } }
+        accessBtn.addEventListener('click', ()=>{
             playBootSound();
-            entryScreen.style.opacity = '0';
-            setTimeout(() => { entryScreen.style.display = 'none'; dashboard.style.display = 'block'; initObserver(); }, 800);
+            entryScreen.style.opacity='0';
+            setTimeout(()=>{ entryScreen.style.display='none'; dashboard.style.display='block'; initObserver(); }, 800);
         });
 
-        // ---------- 4. MODAL ----------
-        const modal = document.getElementById('project-modal');
-        const mTitle = document.getElementById('m-title');
-        const mDesc = document.getElementById('m-desc');
-        const mTech = document.getElementById('m-tech');
-        const mLink = document.getElementById('m-link');
+        // ---------- 5. MODAL (pauses canvas) ----------
+        const modal=document.getElementById('project-modal'), mTitle=document.getElementById('m-title'), mDesc=document.getElementById('m-desc'), mTech=document.getElementById('m-tech'), mLink=document.getElementById('m-link');
         window.openModal = (title, desc, tech, link) => {
-            mTitle.textContent = title;
-            mDesc.textContent = desc + " This system integrates advanced AI workflows.";
-            mTech.textContent = "Primary Stack: " + tech;
-            mLink.href = link;
-            modal.classList.add('active');
-            playClickSound();
+            mTitle.textContent=title; mDesc.textContent=desc+" This system integrates advanced AI workflows."; mTech.textContent="Primary Stack: "+tech; mLink.href=link;
+            modal.classList.add('active'); playClickSound();
+            cancelAnimationFrame(animFrameId); // pause canvas
         };
-        document.getElementById('close-modal').onclick = () => modal.classList.remove('active');
-        modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('active'); };
+        document.getElementById('close-modal').onclick = ()=>{ modal.classList.remove('active'); animFrameId=requestAnimationFrame(animate); };
+        modal.onclick = (e)=>{ if(e.target===modal){ modal.classList.remove('active'); animFrameId=requestAnimationFrame(animate); } };
 
-        // ---------- 5. THINKING TEXT OBSERVER ----------
-        const thinkingText = document.getElementById('ai-thinking');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    if (entry.target.classList.contains('mod-projects')) thinkingText.textContent = "Analyzing code repositories... Fetching latest commits...";
-                    else if (entry.target.classList.contains('mod-education')) thinkingText.textContent = "Accessing academic records...";
-                    else if (entry.target.classList.contains('mod-about')) thinkingText.textContent = "Processing core logic... Optimizing architecture...";
-                    else if (entry.target.classList.contains('mod-contact')) thinkingText.textContent = "Establishing secure uplink... Ready.";
-                    else if (entry.target.classList.contains('mod-experience')) thinkingText.textContent = "Scanning work history...";
-                    else thinkingText.textContent = "System monitoring: Waiting for input...";
+        // ---------- 6. THINKING TEXT OBSERVER ----------
+        const thinkingText=document.getElementById('ai-thinking');
+        const observer = new IntersectionObserver((entries)=>{
+            entries.forEach(entry=>{
+                if(entry.isIntersecting){
+                    if(entry.target.classList.contains('mod-projects')) thinkingText.textContent="Analyzing code repositories... Fetching latest commits...";
+                    else if(entry.target.classList.contains('mod-education')) thinkingText.textContent="Accessing academic records...";
+                    else if(entry.target.classList.contains('mod-about')) thinkingText.textContent="Processing core logic... Optimizing architecture...";
+                    else if(entry.target.classList.contains('mod-contact')) thinkingText.textContent="Establishing secure uplink... Ready.";
+                    else if(entry.target.classList.contains('mod-experience')) thinkingText.textContent="Scanning work history...";
+                    else thinkingText.textContent="System monitoring: Waiting for input...";
                 }
             });
-        }, { threshold: 0.5 });
-        function initObserver() { document.querySelectorAll('.module').forEach(sec => observer.observe(sec)); }
+        },{threshold:0.5});
+        function initObserver(){ document.querySelectorAll('.module').forEach(sec=>observer.observe(sec)); }
 
-        // ---------- 6. TERMINAL ----------
-        const terminalBtn = document.getElementById('terminal-btn');
-        const terminal = document.getElementById('terminal');
-        const termInput = document.getElementById('terminal-input');
-        const termOutput = document.getElementById('terminal-output');
-        const commands = ['help','about','bio','skills','contact','clear','github','projects','hackathons','experience','links','date','whoami','sudo','theme'];
-        let cmdHistory = [];
-        let historyIndex = -1;
-        let tabPrefix = '';
-        let tabIndex = 0;
+        // ---------- 7. BACK TO TOP ----------
+        const backToTop = document.getElementById('back-to-top');
+        window.addEventListener('scroll', ()=>{ if(window.scrollY > 400) backToTop.classList.add('visible'); else backToTop.classList.remove('visible'); });
+        backToTop.addEventListener('click', ()=>{ window.scrollTo({top:0, behavior:'smooth'}); playClickSound(); });
 
-        terminalBtn.addEventListener('click', () => {
-            terminal.style.display = terminal.style.display === 'flex' ? 'none' : 'flex';
-            if(terminal.style.display === 'flex') termInput.focus();
+        // ---------- 8. TERMINAL (ENHANCED) ----------
+        const terminalBtn = document.getElementById('terminal-btn'), terminal = document.getElementById('terminal'), termInput = document.getElementById('terminal-input'), termOutput = document.getElementById('terminal-output');
+        const commands = ['help','about','bio','skills','contact','clear','github','projects','hackathons','experience','links','date','whoami','sudo','theme','neofetch','fortune'];
+        let cmdHistory=[], historyIndex=-1, tabPrefix='', tabIndex=0;
+
+        const welcomeTips = [
+            "Tip: Type 'neofetch' to see your system info.",
+            "Tip: Use ↑↓ arrows to navigate command history.",
+            "Tip: Press Tab to autocomplete commands.",
+            "Tip: Type 'theme' to toggle dark/light mode.",
+            "Tip: Ctrl+Shift+D toggles theme, Ctrl+Shift+T toggles this terminal."
+        ];
+
+        function initTerminalWelcome() {
+            termOutput.innerHTML = '';
+            addTerminalLine("Welcome to VISWANTH-OS v9.0 // Neural Core Terminal");
+            addTerminalLine("Type 'help' for available commands.");
+            addTerminalLine(welcomeTips[Math.floor(Math.random() * welcomeTips.length)]);
+        }
+        initTerminalWelcome();
+
+        terminalBtn.addEventListener('click', ()=>{
+            const isVisible = terminal.style.display === 'flex';
+            terminal.style.display = isVisible ? 'none' : 'flex';
+            if (!isVisible) { termInput.focus(); if (termOutput.children.length === 0) initTerminalWelcome(); }
             playClickSound();
         });
-        terminal.addEventListener('click', () => { termInput.focus(); });
+        terminal.addEventListener('click', ()=>{ termInput.focus(); });
 
-        function addTerminalLine(text, isCommand = false) {
+        // Minimize by clicking header
+        document.getElementById('terminal-header').addEventListener('click', function(e){
+            if (e.target.tagName==='BUTTON' || e.target.tagName==='SPAN' && e.target.textContent==='✕') return;
+            terminal.classList.toggle('minimized');
+        });
+        document.getElementById('terminal-min-btn').addEventListener('click', (e)=>{
+            e.stopPropagation();
+            terminal.classList.toggle('minimized');
+        });
+
+        function addTerminalLine(text, isCommand=false) {
             const line = document.createElement('div');
             line.className = 'cmd-response';
             if (isCommand) line.innerHTML = `<span class="cmd-prompt">></span> ${text}`;
@@ -709,97 +786,103 @@
             termOutput.scrollTop = termOutput.scrollHeight;
         }
 
-        termInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Tab') {
+        termInput.addEventListener('keydown', function(e){
+            playClickSound();
+            if (e.key==='Tab') {
+                e.preventDefault(); const val=termInput.value;
+                if(tabPrefix==='') tabPrefix=val;
+                const matching=commands.filter(c=>c.startsWith(tabPrefix));
+                if(matching.length>0){ termInput.value=matching[tabIndex%matching.length]; tabIndex=(tabIndex+1)%matching.length; }
+            } else if (e.key==='ArrowUp') {
                 e.preventDefault();
-                const val = termInput.value;
-                if (tabPrefix === '') tabPrefix = val;
-                const matching = commands.filter(cmd => cmd.startsWith(tabPrefix));
-                if (matching.length > 0) {
-                    termInput.value = matching[tabIndex % matching.length];
-                    tabIndex = (tabIndex + 1) % matching.length;
-                }
-            } else if (e.key === 'ArrowUp') {
+                if(cmdHistory.length>0){ if(historyIndex<cmdHistory.length-1) historyIndex++; termInput.value=cmdHistory[cmdHistory.length-1-historyIndex]; }
+            } else if (e.key==='ArrowDown') {
                 e.preventDefault();
-                if (cmdHistory.length > 0) {
-                    if (historyIndex < cmdHistory.length - 1) historyIndex++;
-                    termInput.value = cmdHistory[cmdHistory.length - 1 - historyIndex];
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex > 0) { historyIndex--; termInput.value = cmdHistory[cmdHistory.length - 1 - historyIndex]; }
-                else { historyIndex = -1; termInput.value = ''; }
-            } else { tabPrefix = ''; tabIndex = 0; }
+                if(historyIndex>0){ historyIndex--; termInput.value=cmdHistory[cmdHistory.length-1-historyIndex]; } else { historyIndex=-1; termInput.value=''; }
+            } else { tabPrefix=''; tabIndex=0; }
 
-            if (e.key === 'Enter') {
-                const cmd = termInput.value.trim();
-                if (cmd === '') return;
-                cmdHistory.push(cmd);
-                historyIndex = -1;
+            if (e.key==='Enter') {
+                const cmd=termInput.value.trim();
+                if(cmd==='') return;
+                cmdHistory.push(cmd); historyIndex=-1;
                 addTerminalLine(cmd, true);
-                const lower = cmd.toLowerCase();
-                if (lower === 'help') addTerminalLine("Commands: help, about, bio, skills, contact, clear, github, projects, hackathons, experience, links, date, whoami, sudo, theme");
-                else if (lower === 'about' || lower === 'bio') {
-                    addTerminalLine("Viswanth Kantha Pandiyan S - 21 y/o Full Stack Developer from Madurai.");
-                    addTerminalLine("B.E. CSE (Final Year) at Kamaraj College of Engineering and Technology.");
-                    addTerminalLine("Specializes in Full Stack Dev & AI Integration.");
-                } else if (lower === 'skills') {
-                    addTerminalLine("Full Stack, React, Node.js, ML/DL, Computer Vision, NLP, LLMs.");
-                    addTerminalLine("Python, C, JavaScript, HTML/CSS, Flask, MySQL, Supabase.");
-                    addTerminalLine("Tools: Git, Docker, VS Code, Jupyter, Figma.");
-                } else if (lower === 'contact') {
-                    addTerminalLine("Email: viswanthtechcs@gmail.com");
-                    addTerminalLine("Phone: 8668008781");
-                    addTerminalLine("LinkedIn: /in/viswanth-kanthapandiyan-s-a9048b344");
-                    addTerminalLine("GitHub: Viswanth5");
-                } else if (lower === 'github') { window.open('https://github.com/Viswanth5','_blank'); addTerminalLine("Opening GitHub..."); }
-                else if (lower === 'projects') {
-                    addTerminalLine("Finguard AI, Patient X, Tribal Earth 360, Custom Dashboard Builder, Skyline Digital, Gym Management UI, Framer Portfolio.");
-                } else if (lower === 'hackathons') {
-                    addTerminalLine("TechathonX’26 Runner-up, HackXios Winner, TECHXPLOSION’25 Runner-up, VibeHack Top 20, RYLA Best Leader.");
-                } else if (lower === 'experience') {
-                    addTerminalLine("Current: Full Stack Developer Intern at Technosprint.");
-                    addTerminalLine("Recent: AI/ML + Full Stack Intern at Cube AI.");
-                    addTerminalLine("Previous: UI/UX Designing Intern at Visnup Info Tech.");
-                    addTerminalLine("Previous: PANITH Innovations.");
-                } else if (lower === 'links') {
-                    addTerminalLine("GitHub: https://github.com/Viswanth5");
-                    addTerminalLine("LinkedIn: /in/viswanth-kanthapandiyan-s-a9048b344");
-                } else if (lower === 'date') addTerminalLine(new Date().toString());
-                else if (lower === 'whoami') addTerminalLine("You are Viswanth Kantha Pandiyan S.");
-                else if (lower === 'sudo') addTerminalLine("Root access already granted.");
-                else if (lower === 'theme') { document.body.classList.toggle('light-mode'); addTerminalLine("Theme toggled."); }
-                else if (lower === 'clear') { termOutput.innerHTML = ''; termInput.value = ''; return; }
+                const lower=cmd.toLowerCase();
+                if (lower==='help') addTerminalLine("Commands: help, about, bio, skills, contact, clear, github, projects, hackathons, experience, links, date, whoami, sudo, theme, neofetch, fortune");
+                else if (lower==='about'||lower==='bio') { addTerminalLine("Viswanth Kantha Pandiyan S - 21 y/o Full Stack Developer from Madurai."); addTerminalLine("B.E. CSE (Final Year) at Kamaraj College of Engineering and Technology."); addTerminalLine("Specializes in Agentic AI, Generative AI & Computer Vision."); }
+                else if (lower==='skills') { addTerminalLine("Agentic AI, Generative AI, Computer Vision, NLP, LLMs, Full Stack."); addTerminalLine("Python, C, JavaScript, HTML/CSS, Flask, MySQL, Supabase."); addTerminalLine("Tools: Git, Docker, VS Code, Jupyter, Figma."); }
+                else if (lower==='contact') { addTerminalLine("Email: viswanthtechcs@gmail.com"); addTerminalLine("Phone: 8668008781"); addTerminalLine("LinkedIn: /in/viswanth-kanthapandiyan-s-a9048b344"); addTerminalLine("GitHub: Viswanth5"); }
+                else if (lower==='github') { window.open('https://github.com/Viswanth5','_blank'); addTerminalLine("Opening GitHub..."); }
+                else if (lower==='projects') addTerminalLine("Finguard AI, Patient X, Tribal Earth 360, Custom Dashboard Builder, Skyline Digital, Gym Management UI, Framer Portfolio.");
+                else if (lower==='hackathons') addTerminalLine("TechathonX'26 Runner-up, HackXios Winner, TECHXPLOSION'25 Runner-up, VibeHack Top 20, RYLA Best Leader.");
+                else if (lower==='experience') { addTerminalLine("Current: Full Stack Developer Intern at Technosprint."); addTerminalLine("Recent: AI/ML + Full Stack Intern at Cube AI."); addTerminalLine("Previous: UI/UX Designing Intern at Visnup Info Tech."); addTerminalLine("Previous: PANITH Innovations."); }
+                else if (lower==='links') { addTerminalLine("GitHub: https://github.com/Viswanth5"); addTerminalLine("LinkedIn: /in/viswanth-kanthapandiyan-s-a9048b344"); }
+                else if (lower==='date') addTerminalLine(new Date().toString());
+                else if (lower==='whoami') addTerminalLine("You are Viswanth Kantha Pandiyan S.");
+                else if (lower==='sudo') addTerminalLine("Root access already granted.");
+                else if (lower==='theme') { document.body.classList.toggle('light-mode'); addTerminalLine("Theme toggled."); }
+                else if (lower==='neofetch') {
+                    addTerminalLine("         .__                 __  .__       .__");
+                    addTerminalLine("  ____  |__| ______  _  ___/  |_|  |__  _|__|");
+                    addTerminalLine(" /    \\ |  |/  ___/ / /_\\  \\   __|  |  \\/  |");
+                    addTerminalLine("|   |  \\|  |\\___ \\  |  |_>  \\  | |   Y  \\  |");
+                    addTerminalLine("|___|  /|__/____ >  |_____/__| |___|  /__|");
+                    addTerminalLine("     \\/         \\/                  \\/");
+                    addTerminalLine("OS: VISWANTH-OS v9.0");
+                    addTerminalLine("Host: Neural Core");
+                    addTerminalLine("Kernel: AI-Enhanced 6.7.0");
+                    addTerminalLine("Uptime: " + Math.floor(Math.random()*999) + " hours");
+                    addTerminalLine("Shell: viswanth-terminal 2.1");
+                    addTerminalLine("CPU: " + cores + "-core AI Processor");
+                    addTerminalLine("Memory: " + (Math.random()*4+10).toFixed(1) + "GB / " + (cores*2) + "GB");
+                }
+                else if (lower==='fortune') {
+                    const fortunes = [
+                        "The best way to predict the future is to invent it. – Alan Kay",
+                        "AI is the new electricity. – Andrew Ng",
+                        "The question isn't 'can machines think?' but 'can humans think about machines thinking?'",
+                        "Data is the new oil. Refine it wisely.",
+                        "First, solve the problem. Then, write the code. – John Johnson",
+                        "The only way to do great work is to love what you do. – Steve Jobs",
+                        "Simplicity is the ultimate sophistication. – Leonardo da Vinci",
+                        "In the middle of difficulty lies opportunity. – Albert Einstein",
+                        "Code is like humour. When you have to explain it, it's bad. – Cory House",
+                        "AI won't replace you. A person using AI will."
+                    ];
+                    addTerminalLine('"' + fortunes[Math.floor(Math.random()*fortunes.length)] + '"');
+                }
+                else if (lower==='clear') { termOutput.innerHTML=''; termInput.value=''; return; }
                 else addTerminalLine(`Unknown command. Type 'help' for list.`);
-                termInput.value = '';
+                termInput.value='';
             }
         });
 
-        // ---------- 7. QUICK NAV INPUT ----------
-        const cmdInput = document.getElementById('ai-command');
-        cmdInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const val = cmdInput.value.toLowerCase();
-                if (val.includes('project')) document.querySelector('.mod-projects').scrollIntoView({behavior:'smooth'});
-                else if (val.includes('contact')) document.querySelector('.mod-contact').scrollIntoView({behavior:'smooth'});
-                else if (val.includes('status')) document.querySelector('.mod-status').scrollIntoView({behavior:'smooth'});
-                else if (val.includes('about')) document.querySelector('.mod-about').scrollIntoView({behavior:'smooth'});
-                else if (val.includes('education')) document.querySelector('.mod-education').scrollIntoView({behavior:'smooth'});
-                cmdInput.value = ">> Executing...";
-                setTimeout(() => { if(cmdInput.value.startsWith(">>")) cmdInput.value = ""; }, 1200);
+        // ---------- 9. QUICK NAV INPUT ----------
+        const cmdInput=document.getElementById('ai-command');
+        cmdInput.addEventListener('keydown', (e)=>{
+            if(e.key==='Enter'){
+                const val=cmdInput.value.toLowerCase();
+                if(val.includes('project')) document.querySelector('.mod-projects').scrollIntoView({behavior:'smooth'});
+                else if(val.includes('contact')) document.querySelector('.mod-contact').scrollIntoView({behavior:'smooth'});
+                else if(val.includes('status')) document.querySelector('.mod-status').scrollIntoView({behavior:'smooth'});
+                else if(val.includes('about')) document.querySelector('.mod-about').scrollIntoView({behavior:'smooth'});
+                else if(val.includes('education')) document.querySelector('.mod-education').scrollIntoView({behavior:'smooth'});
+                cmdInput.value=">> Executing...";
+                setTimeout(()=>{ if(cmdInput.value.startsWith(">>")) cmdInput.value=""; }, 1200);
             }
         });
 
-        // ---------- 8. KEYBOARD SHORTCUTS ----------
-        window.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'T') { e.preventDefault(); terminal.style.display = terminal.style.display === 'flex' ? 'none' : 'flex'; if(terminal.style.display==='flex') termInput.focus(); playClickSound(); }
-            if (e.ctrlKey && e.shiftKey && e.key === 'D') { e.preventDefault(); document.body.classList.toggle('light-mode'); playClickSound(); }
+        // ---------- 10. KEYBOARD SHORTCUTS ----------
+        window.addEventListener('keydown', (e)=>{
+            if(e.ctrlKey&&e.shiftKey&&e.key==='T'){ e.preventDefault(); terminal.style.display=terminal.style.display==='flex'?'none':'flex'; if(terminal.style.display==='flex') termInput.focus(); playClickSound(); }
+            if(e.ctrlKey&&e.shiftKey&&e.key==='D'){ e.preventDefault(); document.body.classList.toggle('light-mode'); playClickSound(); }
         });
 
         // ---------- INIT ----------
-        window.onload = function() {
+        window.onload = function(){
             typeWriter();
+            resize(); initEntities(); animFrameId = requestAnimationFrame(animate);
         };
+        window.addEventListener('resize', resize);
     </script>
 </body>
 </html>
