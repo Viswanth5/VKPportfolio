@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Viswanth Kantha Pandiyan S - AI/ML Engineer & Product Developer.">
+    <title>Viswanth's AI | Neural Core</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* DARK MODE (DEFAULT) */
+            --bg-color: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.95);
+            --text-primary: #FFFFFF;
+            --text-secondary: #888888;
+            --border-color: #2a2a2a;
+            --accent-color: #FFFFFF;
+            --input-bg: rgba(255, 255, 255, 0.05);
+            --input-focus-bg: rgba(255, 255, 255, 0.1);
+            --font-main: 'Inter', sans-serif;
+            --font-code: 'JetBrains Mono', monospace;
+            --status-green: #00ff88;
+            --gold: #FFD700;
+            --highlight-color: rgba(255, 255, 255, 0.7); /* Semi White */
+        }
+
+        body.light-mode {
+            /* LIGHT MODE OVERRIDES */
+            --bg-color: #F0F2F5;
+            --card-bg: #FFFFFF;
+            --text-primary: #000000;
+            --text-secondary: #555555;
+            --border-color: #E0E0E0;
+            --accent-color: #000000;
+            --input-bg: rgba(0, 0, 0, 0.05);
+            --input-focus-bg: rgba(0, 0, 0, 0.1);
+            --status-green: #00aa55;
+            --gold: #b8860b;
+            --highlight-color: rgba(0, 0, 0, 0.7); /* Semi Black for Light Mode */
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* Custom Cursor Handling */
+        @media (hover: hover) and (pointer: fine) {
+            body { cursor: none; }
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            min-height: 100vh;
+        }
+
+        /* CURSOR */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            display: none;
+        }
+        @media (hover: hover) and (pointer: fine) {
+            .cursor-dot, .cursor-outline { display: block; }
+        }
+        .cursor-dot {
+            width: 4px; height: 4px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            transition: background 0.1s;
+        }
+        .cursor-outline {
+            width: 25px; height: 25px;
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            transition: width 0.15s, height 0.15s, border-color 0.15s, background 0.15s;
+        }
+        body.hovering .cursor-outline {
+            width: 45px; height: 45px;
+            background: rgba(128,128,128,0.1);
+            border-color: transparent;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--border-color); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+        .hidden { display: none !important; }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+
+        /* ENTRY SCREEN */
+        #entry-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-color); z-index: 10000; transition: opacity 0.8s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .loader-text { font-family: var(--font-code); font-size: 1.2rem; letter-spacing: 1px; color: var(--text-primary); }
+        .cursor-blink { animation: blink 0.8s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* BUTTON - ALWAYS VISIBLE */
+        #access-btn {
+            margin-top: 20px;
+            background: transparent;
+            border: 1px solid var(--text-primary);
+            color: var(--text-primary);
+            padding: 12px 30px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            opacity: 1;                    /* always visible */
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transform: translateY(0);      /* no hidden offset */
+        }
+
+        @media (hover: hover) and (pointer: fine) { #access-btn { cursor: none; } }
+        #access-btn:hover { background: var(--text-primary); color: var(--bg-color); }
+
+        #main-dashboard {
+            padding: 2rem; max-width: 1400px; margin: 0 auto; display: none; opacity: 0;
+            position: relative; z-index: 1; animation: fadeIn 1s forwards;
+            padding-bottom: 80px;
+        }
+        @keyframes fadeIn { to { opacity:1; } }
+
+        header {
+            display: flex; flex-direction: column; gap: 1rem; margin-bottom: 3rem;
+            border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;
+        }
+        @media (min-width: 768px) { header { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .brand { font-weight: 700; letter-spacing: -1px; font-size: 1.3rem; }
+        .brand-highlight { color: var(--text-secondary); font-weight: 300; margin-left: 5px; }
+
+        .header-controls { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+
+        .system-metrics {
+            font-family: var(--font-code); font-size: 0.75rem; color: var(--text-secondary);
+            border-right: 1px solid var(--border-color); padding-right: 20px;
+            display: none;
+        }
+        @media(min-width: 600px) { .system-metrics { display: block; } }
+        .metric-val { color: var(--text-primary); }
+
+        .terminal-toggle {
+            font-family: var(--font-code); font-size: 1.2rem; color: var(--text-secondary);
+            border: 1px solid var(--border-color); width: 40px; height: 40px;
+            border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: 0.2s; cursor: pointer;
+        }
+        .terminal-toggle:hover { border-color: var(--text-primary); color: var(--text-primary); }
+
+        .command-wrapper { position: relative; }
+        #ai-command {
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary); padding: 8px 16px; font-family: var(--font-code);
+            font-size: 0.85rem; width: 250px; transition: 0.3s, background-color 0.3s; border-radius: 4px; cursor: text;
+        }
+        @media (hover: hover) and (pointer: fine) { #ai-command { cursor: none; } }
+        #ai-command:focus {
+            outline: none; border-color: var(--text-primary); background: var(--input-focus-bg); width: 300px;
+        }
+        #ai-command::placeholder { color: var(--text-secondary); opacity: 0.6; }
+
+        .grid-container { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+
+        .module {
+            background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 24px; transition: background-color 0.4s, border-color 0.4s, transform 0.3s; 
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+        }
+        .module:hover { border-color: var(--text-secondary); transform: translateY(-2px); }
+
+        .module-header {
+            font-family: var(--font-code); font-size: 0.7rem; text-transform: uppercase;
+            color: var(--text-secondary); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+        }
+        .module-header::before { content: '■'; font-size: 8px; color: var(--accent-color); }
+
+        /* Grid Spans */
+        .mod-identity { grid-column: span 12; }
+        @media (min-width: 768px) { .mod-identity { grid-column: span 4; } }
+        .mod-status { grid-column: span 12; }
+        @media (min-width: 768px) { .mod-status { grid-column: span 8; } }
+        .mod-about { grid-column: span 12; }
+        .mod-education { grid-column: span 12; }
+        @media (min-width: 768px) { .mod-education { grid-column: span 4; } }
+        .mod-experience { grid-column: span 12; }
+        .mod-leadership { grid-column: span 12; }
+        .mod-upcoming { grid-column: span 12; }
+        .mod-projects { grid-column: span 12; }
+        .mod-contact { grid-column: span 12; }
+
+        /* Profile */
+        .profile-container { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px; }
+        .avatar-wrapper {
+            position: relative; width: 100px; height: 100px; border-radius: 50%; overflow: hidden;
+            border: 1px solid var(--border-color); box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        .avatar-img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(120%); }
+        .avatar-wrapper::after {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0) 0px, rgba(0,0,0,0) 2px, rgba(255,255,255,0.1) 3px);
+            z-index: 2; pointer-events: none;
+        }
+        .name { font-size: 1.3rem; font-weight: 600; letter-spacing: -0.5px; }
+        .role { color: var(--text-secondary); font-size: 0.9rem; }
+        .detail-text { font-size: 0.8rem; color: var(--text-secondary); margin-top:5px; font-family: var(--font-code); }
+
+        /* Education & Experience Items */
+        .timeline-item { margin-bottom: 12px; border-left:1px solid var(--border-color); padding-left: 12px; position: relative; }
+        .timeline-item::before { content: ''; width: 6px; height: 6px; background: var(--text-primary); border-radius: 50%; position: absolute; left: -3.5px; top: 6px; }
+        .timeline-title { font-size: 0.85rem; font-weight: 500; color: var(--text-primary); }
+        .timeline-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 2px; }
+        
+        /* Highlight Class */
+        .highlight-text {
+            color: var(--highlight-color);
+            font-weight: 600;
+        }
+        
+        /* Specific Styles for Upcoming Projects */
+        .upcoming-item {
+            background: rgba(128,128,128,0.05); border: 1px dashed var(--border-color);
+            padding: 12px; border-radius: 6px; margin-bottom: 10px;
+        }
+        .upcoming-title { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
+        .upcoming-tag { font-size: 0.65rem; background: var(--accent-color); color: var(--bg-color); padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .upcoming-desc { font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px; }
+
+        /* Status */
+        .status-row { display: flex; flex-direction: column; gap: 15px; height: 100%; justify-content: center;}
+        @media (min-width: 768px) { .status-row { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .status-content h3 { font-size: 1.2rem; font-weight: 500; margin-bottom: 4px; }
+        .status-content p { color: var(--text-secondary); font-size: 0.9rem; }
+        .system-indicator { text-align: left; }
+        @media (min-width: 768px) { .system-indicator { text-align: right; } }
+        .status-badge {
+            background: rgba(0, 255, 136, 0.1); color: var(--status-green); border: 1px solid var(--status-green);
+            padding: 4px 12px; font-size: 0.75rem; font-family: var(--font-code); border-radius: 20px;
+            display: inline-flex; align-items: center; gap: 6px; margin-bottom: 8px;
+            text-shadow: 0 0 5px var(--status-green);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        body.light-mode .status-badge {
+            background: rgba(0, 170, 85, 0.15);
+            text-shadow: none;
+        }
+        .status-mode { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-secondary); }
+
+        /* About */
+        .about-text { font-size: 1.05rem; margin-bottom: 15px; color: var(--text-primary); line-height: 1.6; }
+        .tag-group { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+        .tag { font-size: 0.75rem; padding: 4px 10px; border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-secondary); transition: 0.2s; background: transparent; }
+        .tag:hover { border-color: var(--text-primary); color: var(--text-primary); background: rgba(128,128,128,0.1); }
+
+        .ai-thinking-container {
+            margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--border-color);
+            display: flex; align-items: center; gap: 10px; font-family: var(--font-code); font-size: 0.8rem; color: var(--text-secondary);
+        }
+        .thinking-dot { width: 6px; height: 6px; background: var(--text-primary); border-radius: 50%; animation: pulse 1s infinite; }
+        @keyframes pulse { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+
+        /* Projects */
+        .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .project-card {
+            background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px;
+            padding: 20px; position: relative; transition: 0.3s, background-color 0.3s;
+            display: flex; flex-direction: column; justify-content: space-between;
+            cursor: pointer;
+        }
+        @media (hover: hover) and (pointer: fine) { .project-card { cursor: none; } }
+        
+        body.light-mode .project-card:hover { background: #e6e6e6; border-color: var(--text-primary); }
+        body:not(.light-mode) .project-card:hover { background: var(--bg-color); border-color: var(--text-primary); }
+
+        .project-card:hover { transform: translateY(-5px); }
+        .project-card::after { content: "↗"; position: absolute; top: 15px; right: 15px; color: var(--text-secondary); transition: 0.3s; }
+        .project-card:hover::after { color: var(--text-primary); transform: translate(3px, -3px); }
+        .project-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; color: var(--text-primary); display: flex; justify-content: space-between; }
+        .project-title span { font-size: 0.7rem; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 2px 6px; border-radius: 4px; height: fit-content; align-self: flex-start;}
+        .project-desc { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4; }
+        .project-tech { font-family: var(--font-code); font-size: 0.75rem; color: var(--text-secondary); }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .contact-item {
+            border: 1px solid var(--border-color); padding: 15px; border-radius: 6px;
+            text-decoration: none; color: var(--text-primary); transition: 0.2s; display: flex; align-items: center; gap: 12px;
+            word-break: break-word;
+        }
+        .contact-item:hover { background: var(--text-primary); color: var(--bg-color); border-color: var(--text-primary); }
+        .contact-label { font-family: var(--font-code); font-size: 0.7rem; color: var(--text-secondary); display: block; margin-bottom: 4px; }
+        .contact-item:hover .contact-label { color: var(--bg-color); }
+        .contact-item svg { flex-shrink: 0; }
+
+        .resume-btn {
+            width: 100%; padding: 15px; background: var(--text-primary); color: var(--bg-color); border: none;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 1px; border-radius: 6px;
+            margin-bottom: 15px; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px;
+            text-decoration: none; cursor: pointer;
+        }
+        @media (hover: hover) and (pointer: fine) { .resume-btn { cursor: none; } }
+        .resume-btn:hover { background: var(--border-color); transform: scale(0.98); color: var(--text-primary); }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            z-index: 2000; opacity: 0; pointer-events: none; transition: 0.3s;
+            display: flex; justify-content: center; align-items: center;
+        }
+        body.light-mode .modal-overlay { background: rgba(255,255,255,0.8); }
+        
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content {
+            background: var(--card-bg); width: 90%; max-width: 600px; border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 30px; position: relative;
+            transform: translateY(20px); transition: 0.3s; box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            color: var(--text-primary);
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .close-modal { position: absolute; top: 15px; right: 20px; background: none; border: none; color: var(--text-secondary); font-size: 1.5rem; cursor: pointer; }
+        .close-modal:hover { color: var(--text-primary); }
+        .modal-title { font-size: 1.5rem; margin-bottom: 10px; color: var(--text-primary); }
+        .modal-tech { font-family: var(--font-code); font-size: 0.8rem; color: var(--text-primary); margin-bottom: 20px; }
+        .modal-body { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px; }
+        .modal-btn { background: var(--text-primary); color: var(--bg-color); padding: 10px 20px; border: none; border-radius: 4px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+
+        /* Terminal */
+        .terminal-window {
+            position: fixed; bottom: 20px; right: 20px; width: 380px; height: 260px;
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px;
+            z-index: 1500; display: none; flex-direction: column; padding: 10px;
+            font-family: var(--font-code); font-size: 0.8rem; color: var(--text-secondary);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px);
+            transition: background-color 0.4s;
+        }
+        @media (max-width: 500px) { .terminal-window { width: 95%; right: 2.5%; bottom: 10px; } }
+
+        .terminal-header { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 5px; margin-bottom: 5px; font-size: 0.7rem; color: var(--text-secondary); }
+        .terminal-body { flex: 1; overflow-y: auto; margin-bottom: 5px; padding-right: 4px; }
+        .terminal-input { background: transparent; border: none; color: var(--text-primary); font-family: var(--font-code); width: 100%; outline: none; }
+        .cmd-response { color: var(--text-secondary); margin-bottom: 4px; word-break: break-all; }
+        .cmd-prompt { color: var(--status-green); margin-right: 5px; }
+
+        .fade-in { animation: fadeInUp 0.6s ease-out forwards; opacity: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body>
+
+    <!-- CURSOR -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- ENTRY SCREEN -->
+    <section id="entry-screen">
+        <div style="text-align: center;">
+            <div class="loader-text" id="typing-text">INITIALIZING VISWANTH'S AI<span class="cursor-blink">_</span></div>
+            <!-- Button always visible, no waiting for typing animation -->
+            <button id="access-btn">ACCESS SYSTEM</button>
+        </div>
+    </section>
+
+    <!-- MAIN DASHBOARD -->
+    <main id="main-dashboard">
+        <header>
+            <div class="brand">Viswanth's AI<span class="brand-highlight">// neural core</span></div>
+            <div class="header-controls">
+                <div class="system-metrics">
+                    CPU: <span class="metric-val">4%</span> | Memory: <span class="metric-val">12GB</span> | Status: <span class="metric-val" style="color: var(--status-green);">ONLINE</span>
+                </div>
+                <div class="terminal-toggle" id="terminal-btn" title="System Terminal (Ctrl+Shift+T)">_&gt;</div>
+                <div class="command-wrapper">
+                    <input type="text" id="ai-command" placeholder="Cmd: 'projects' or 'about'..." autocomplete="off">
+                </div>
+            </div>
+        </header>
+
+        <div class="grid-container">
+            <!-- IDENTITY -->
+            <div class="module mod-identity fade-in" style="animation-delay: 0.1s;">
+                <div class="module-header">Identity Module</div>
+                <div class="profile-container">
+                    <div class="avatar-wrapper">
+                        <img src="https://ui-avatars.com/api/?name=Viswanth+Kantha&background=000&color=fff&size=128" alt="Viswanth" class="avatar-img">
+                    </div>
+                    <div>
+                        <div class="name">Viswanth Kantha<br>Pandiyan S</div>
+                        <div class="role">Full Stack Developer | AI Engineer</div>
+                    </div>
+                    <div class="detail-text">🎂 Dec 14, 2003 | 📍 Madurai, India</div>
+                </div>
+            </div>
+
+            <!-- STATUS -->
+            <div class="module mod-status fade-in" style="animation-delay: 0.2s;">
+                <div class="module-header">Live Operation Status</div>
+                <div class="status-row">
+                    <div class="status-content">
+                        <h3>Full Stack Developer Intern</h3>
+                        <p>Technosprint — Full Stack Development & Architecture</p>
+                    </div>
+                    <div class="system-indicator">
+                        <div class="status-badge">
+                            <span style="display: inline-block; width: 8px; height: 8px; background: var(--status-green); border-radius: 50%; box-shadow: 0 0 8px var(--status-green);"></span>
+                            SYSTEM ACTIVE
+                        </div>
+                        <div class="status-mode">Mode: Learning / Building</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ABOUT / CORE OBJECTIVE (TAG UPDATED) -->
+            <div class="module mod-about fade-in" style="animation-delay: 0.3s;">
+                <div class="module-header">AI Engine (Core Objective)</div>
+                <p class="about-text">I build scalable Full Stack applications and AI systems. Specialized in designing decision systems that don't just show data — but understand, explain, and act on it and stay focused upon my goals towards growth and sucess.</p>
+                <div class="tag-group">
+                    <span class="tag">Full Stack</span>
+                    <span class="tag">AI/ML Development</span>  <!-- Replaced React/Node.js -->
+                    <span class="tag">AI Integration</span>
+                </div>
+                <div class="ai-thinking-container">
+                    <div class="thinking-dot"></div>
+                    <div id="ai-thinking">System monitoring: Waiting for input...</div>
+                </div>
+            </div>
+
+            <!-- EDUCATION -->
+            <div class="module mod-education fade-in" style="animation-delay: 0.4s;">
+                <div class="module-header">Education Logs</div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div class="timeline-item">
+                        <div class="timeline-title">B.E. Computer Science & Engineering</div>
+                        <div class="timeline-desc">Kamaraj College of Engineering and Technology (Final Year)</div>
+                        <div class="timeline-desc">CGPA: <span class="highlight-text">8.01</span></div>
+                        <div class="timeline-desc">2023 - 2027</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-title">Schooling</div>
+                        <div class="timeline-desc">TVS Matriculation Higher Secondary School (Lake Campus)</div>
+                        <div class="timeline-desc">Completed with <span class="highlight-text">70%</span></div>
+                        <div class="timeline-desc">Batch: 2023</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXPERIENCE -->
+            <div class="module mod-experience fade-in" style="animation-delay: 0.5s;">
+                <div class="module-header">Experience Logs</div>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <div style="border-left: 2px solid var(--border-color); padding-left: 15px;">
+                        <h4 style="font-size: 1rem; color: var(--text-primary);">AI/ML + Full Stack Intern</h4>
+                        <div style="font-family: var(--font-code); font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 5px;">Cube AI (Recent)</div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Worked on AI/ML integration and Full Stack development.</p>
+                    </div>
+                    <div style="border-left: 2px solid var(--border-color); padding-left: 15px;">
+                        <h4 style="font-size: 1rem; color: var(--text-primary);">UI/UX Designing Intern</h4>
+                        <div style="font-family: var(--font-code); font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 5px;">Visnup Info Tech</div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Focus on UI design and user experience optimization.</p>
+                    </div>
+                    <div style="border-left: 2px solid var(--border-color); padding-left: 15px;">
+                        <h4 style="font-size: 1rem; color: var(--text-primary);">AI/ML Intern</h4>
+                        <div style="font-family: var(--font-code); font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 5px;">PANITH Innovations</div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Completed 20-day internship. Built 10+ real-world projects.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPCOMING / R&D -->
+            <div class="module mod-upcoming fade-in" style="animation-delay: 0.6s;">
+                <div class="module-header">R&D Lab (Upcoming)</div>
+                <div class="upcoming-item">
+                    <div class="upcoming-title">
+                        Agricultural AI Analysis
+                        <span class="upcoming-tag">Research</span>
+                    </div>
+                    <div class="upcoming-desc">Developing AI models for crop analysis and soil prediction optimization.</div>
+                </div>
+                <div class="upcoming-item">
+                    <div class="upcoming-title">
+                        AI-powered Folder Builder
+                        <span class="upcoming-tag">Dev</span>
+                    </div>
+                    <div class="upcoming-desc">An intelligent automated system for organizing and structuring file directories.</div>
+                </div>
+            </div>
+
+            <div class="module mod-leadership fade-in" style="animation-delay: 0.7s;">
+                <div class="module-header">Leadership & Initiatives</div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 6px; width: 100%;">
+                        <div style="font-weight: 600; font-size: 0.9rem;">🚀 Founder – KwickNClick</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">Conducted workshops on design & freelancing.</div>
+                    </div>
+                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); padding: 10px 15px; border-radius: 6px; width: 100%;">
+                        <div style="font-weight: 600; font-size: 0.9rem;">🤝 Co-Founder – Digitalmachi</div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">Helped students learn Canva & Photoshop.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJECTS -->
+            <div class="module mod-projects fade-in" style="animation-delay: 0.8s;">
+                <div class="module-header">Deployment Logs (High Priority)</div>
+                <div class="project-grid">
+                    <div class="project-card" onclick="window.openModal('Finguard AI', 'AI-powered fintech compliance system with anomaly detection, YOLO-based KYC verification, and LLM validation.', 'Python • YOLO • OCR • Gemini • ML', 'https://github.com/Viswanth5')"><div class="project-title">Finguard AI <span>v1.0</span></div><div class="project-desc">AI-powered fintech compliance system with anomaly detection, YOLO-based KYC verification, and LLM validation.</div><div class="project-tech">Python • YOLO • OCR • Gemini • ML</div></div>
+                    <div class="project-card" onclick="window.openModal('Patient X', 'Privacy-first AI + Blockchain healthcare marketplace with anonymization, validation, and dataset engineering.', 'AI • Blockchain • Data Privacy • Validation', 'https://patient-x.vercel.app/')"><div class="project-title">Patient X <span>Live</span></div><div class="project-desc">Privacy-first AI + Blockchain healthcare marketplace with anonymization, validation, and dataset engineering.</div><div class="project-tech">AI • Blockchain • Data Privacy • Validation</div></div>
+                    <div class="project-card" onclick="window.openModal('Tribal Earth 360', 'AI-based Decision Support System for land planning using spatial data and governance intelligence.', 'Python • GIS • DSS • AI', 'https://tribal-earth-360.vercel.app/')"><div class="project-title">Tribal Earth 360 <span>SIH</span></div><div class="project-desc">AI-based Decision Support System for land planning using spatial data and governance intelligence.</div><div class="project-tech">Python • GIS • DSS • AI</div></div>
+                    <div class="project-card" onclick="window.openModal('Custom Dashboard Builder', 'Drag-and-drop dashboard system with real-time data, Supabase backend, and AI-generated insights.', 'Supabase • JS • Charts • AI Insights', 'https://halleyx-sage.vercel.app/')"><div class="project-title">Custom Dashboard Builder <span>AI</span></div><div class="project-desc">Drag-and-drop dashboard system with real-time data, Supabase backend, and AI-generated insights.</div><div class="project-tech">Supabase • JS • Charts • AI Insights</div></div>
+                    <div class="project-card" onclick="window.openModal('Skyline Digital Services', 'Developed a clean, responsive static website for a digital services company with modern UI design.', 'HTML • CSS • JS • UI Design', 'https://skylinedigitalservicess.vercel.app/')"><div class="project-title">Skyline Digital Services <span>Client</span></div><div class="project-desc">Developed a clean, responsive static website for a digital services company with modern UI design.</div><div class="project-tech">HTML • CSS • JS • UI Design</div></div>
+                    <div class="project-card" onclick="window.openModal('Gym Management UI', 'Interactive fitness website with BMI calculator, dynamic UI, and multiple user-focused features.', 'JavaScript • UI/UX • Calculator Logic', 'https://aayshma.vercel.app/')"><div class="project-title">Gym Management UI <span>Dynamic</span></div><div class="project-desc">Interactive fitness website with BMI calculator, dynamic UI, and multiple user-focused features.</div><div class="project-tech">JavaScript • UI/UX • Calculator Logic</div></div>
+                    <div class="project-card" onclick="window.openModal('Framer Portfolio', 'Personal portfolio built using Framer showcasing design thinking, responsiveness, and UI systems.', 'Framer • UI/UX • Design Systems', 'https://viswanthkp.framer.website/')"><div class="project-title">Framer Portfolio <span>Design</span></div><div class="project-desc">Personal portfolio built using Framer showcasing design thinking, responsiveness, and UI systems.</div><div class="project-tech">Framer • UI/UX • Design Systems</div></div>
+                </div>
+            </div>
+
+            <div class="module mod-contact fade-in" style="animation-delay: 0.9s;">
+                <div class="module-header">Uplink / Connect</div>
+                <!-- IMPORTANT: Ensure ViswanthResume.pdf is in the same folder as this HTML file -->
+                <a href="ViswanthResume.pdf" target="_blank" class="resume-btn" title="View Resume (PDF)">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>View / Download Resume
+                </a>
+                <div class="contact-grid">
+                    <a href="mailto:viswanthtechcs@gmail.com" class="contact-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><div><span class="contact-label">Email</span>viswanthtechcs@gmail.com</div></a>
+                    <a href="https://linkedin.com/in/viswanth-kanthapandiyan-s-a9048b344" target="_blank" class="contact-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg><div><span class="contact-label">LinkedIn</span>Viswanth K.</div></a>
+                    <a href="https://github.com/Viswanth5" target="_blank" class="contact-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg><div><span class="contact-label">GitHub</span>Viswanth5</div></a>
+                </div>
+            </div>
+        </div>
+        <footer style="margin-top: 40px; text-align: center; color: var(--text-secondary); font-size: 0.75rem; font-family: var(--font-code);">VISWANTH'S AI // NEURAL CORE v1.0 // END OF LINE</footer>
+    </main>
+
+    <!-- MODAL & TERMINAL -->
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <h2 class="modal-title" id="m-title">Project Title</h2>
+            <div class="modal-tech" id="m-tech">Tech Stack</div>
+            <div class="modal-body" id="m-desc">Description...</div>
+            <a href="#" target="_blank" id="m-link" class="modal-btn">VISIT PROJECT</a>
+        </div>
+    </div>
+    <div class="terminal-window" id="terminal">
+        <div class="terminal-header">
+            <span>VISWANTH-OS v9.0</span>
+            <span style="cursor:pointer" onclick="document.getElementById('terminal').style.display='none'">✕</span>
+        </div>
+        <div class="terminal-body" id="terminal-output">
+            <div class="cmd-response">Welcome to Viswanth's AI terminal.</div>
+            <div class="cmd-response">Type 'help' for available commands.</div>
+        </div>
+        <div style="display: flex; align-items: center; margin-top: 5px;">
+            <span class="cmd-prompt">></span>
+            <input type="text" class="terminal-input" id="terminal-input" autocomplete="off" spellcheck="false">
+        </div>
+    </div>
+
+    <script>
+        // ---------- 1. SMOOTH CURSOR ----------
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        let mouseX = 0, mouseY = 0;
+        
+        if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+            window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+            function updateCursor() {
+                cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+                cursorOutline.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+                requestAnimationFrame(updateCursor);
+            }
+            requestAnimationFrame(updateCursor);
+
+            document.querySelectorAll('a, button, input, .project-card, .module, .terminal-toggle, .theme-toggle').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+            });
+        }
+
+        // ---------- 2. MINIMAL AUDIO ENGINE ----------
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        }
+        function playClickSound() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+        function playBootSound() {
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.type = 'sine';
+            const now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(300, now);
+            osc.frequency.linearRampToValueAtTime(800, now + 0.2);
+            gain.gain.setValueAtTime(0.02, now);
+            gain.gain.linearRampToValueAtTime(0.0, now + 0.4);
+            osc.start(now); osc.stop(now + 0.4);
+        }
+
+        document.body.addEventListener('click', () => initAudio(), { once: true });
+
+        document.querySelectorAll('button, .project-card, .contact-item, .resume-btn, .terminal-toggle').forEach(btn => {
+            btn.addEventListener('click', () => { playClickSound(); });
+        });
+
+        // ---------- 3. LOADER & ENTRY (NO OPACITY WAIT) ----------
+        const entryScreen = document.getElementById('entry-screen');
+        const typingText = document.getElementById('typing-text');
+        const accessBtn = document.getElementById('access-btn');
+        const dashboard = document.getElementById('main-dashboard');
+        const fullText = "INITIALIZING VISWANTH'S AI";
+        let i = 0;
+        function typeWriter() {
+            if (i < fullText.length) {
+                typingText.innerHTML = fullText.substring(0, i+1) + '<span class="cursor-blink">_</span>';
+                i++; setTimeout(typeWriter, 50);
+            }
+            // NO VISIBLE CLASS NEEDED – button is already visible
+        }
+        accessBtn.addEventListener('click', () => {
+            playBootSound();
+            entryScreen.style.opacity = '0';
+            setTimeout(() => { entryScreen.style.display = 'none'; dashboard.style.display = 'block'; initObserver(); }, 800);
+        });
+
+        // ---------- 4. MODAL ----------
+        const modal = document.getElementById('project-modal');
+        const mTitle = document.getElementById('m-title');
+        const mDesc = document.getElementById('m-desc');
+        const mTech = document.getElementById('m-tech');
+        const mLink = document.getElementById('m-link');
+        window.openModal = (title, desc, tech, link) => {
+            mTitle.textContent = title;
+            mDesc.textContent = desc + " This system integrates advanced AI workflows.";
+            mTech.textContent = "Primary Stack: " + tech;
+            mLink.href = link;
+            modal.classList.add('active');
+            playClickSound();
+        };
+        document.getElementById('close-modal').onclick = () => modal.classList.remove('active');
+        modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('active'); };
+
+        // ---------- 5. THINKING TEXT OBSERVER ----------
+        const thinkingText = document.getElementById('ai-thinking');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('mod-projects')) thinkingText.textContent = "Analyzing code repositories... Fetching latest commits...";
+                    else if (entry.target.classList.contains('mod-education')) thinkingText.textContent = "Accessing academic records...";
+                    else if (entry.target.classList.contains('mod-about')) thinkingText.textContent = "Processing core logic... Optimizing architecture...";
+                    else if (entry.target.classList.contains('mod-contact')) thinkingText.textContent = "Establishing secure uplink... Ready.";
+                    else if (entry.target.classList.contains('mod-experience')) thinkingText.textContent = "Scanning work history...";
+                    else thinkingText.textContent = "System monitoring: Waiting for input...";
+                }
+            });
+        }, { threshold: 0.5 });
+        function initObserver() { document.querySelectorAll('.module').forEach(sec => observer.observe(sec)); }
+
+        // ---------- 6. TERMINAL ----------
+        const terminalBtn = document.getElementById('terminal-btn');
+        const terminal = document.getElementById('terminal');
+        const termInput = document.getElementById('terminal-input');
+        const termOutput = document.getElementById('terminal-output');
+        const commands = ['help','about','bio','skills','contact','clear','github','projects','hackathons','experience','links','date','whoami','sudo','theme'];
+        let cmdHistory = [];
+        let historyIndex = -1;
+        let tabPrefix = '';
+        let tabIndex = 0;
+
+        terminalBtn.addEventListener('click', () => {
+            terminal.style.display = terminal.style.display === 'flex' ? 'none' : 'flex';
+            if(terminal.style.display === 'flex') termInput.focus();
+            playClickSound();
+        });
+        terminal.addEventListener('click', () => { termInput.focus(); });
+
+        function addTerminalLine(text, isCommand = false) {
+            const line = document.createElement('div');
+            line.className = 'cmd-response';
+            if (isCommand) line.innerHTML = `<span class="cmd-prompt">></span> ${text}`;
+            else line.textContent = text;
+            termOutput.appendChild(line);
+            termOutput.scrollTop = termOutput.scrollHeight;
+        }
+
+        termInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                e.preventDefault();
+                const val = termInput.value;
+                if (tabPrefix === '') tabPrefix = val;
+                const matching = commands.filter(cmd => cmd.startsWith(tabPrefix));
+                if (matching.length > 0) {
+                    termInput.value = matching[tabIndex % matching.length];
+                    tabIndex = (tabIndex + 1) % matching.length;
+                }
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (cmdHistory.length > 0) {
+                    if (historyIndex < cmdHistory.length - 1) historyIndex++;
+                    termInput.value = cmdHistory[cmdHistory.length - 1 - historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex > 0) { historyIndex--; termInput.value = cmdHistory[cmdHistory.length - 1 - historyIndex]; }
+                else { historyIndex = -1; termInput.value = ''; }
+            } else { tabPrefix = ''; tabIndex = 0; }
+
+            if (e.key === 'Enter') {
+                const cmd = termInput.value.trim();
+                if (cmd === '') return;
+                cmdHistory.push(cmd);
+                historyIndex = -1;
+                addTerminalLine(cmd, true);
+                const lower = cmd.toLowerCase();
+                if (lower === 'help') addTerminalLine("Commands: help, about, bio, skills, contact, clear, github, projects, hackathons, experience, links, date, whoami, sudo, theme");
+                else if (lower === 'about' || lower === 'bio') {
+                    addTerminalLine("Viswanth Kantha Pandiyan S - 21 y/o Full Stack Developer from Madurai.");
+                    addTerminalLine("B.E. CSE (Final Year) at Kamaraj College of Engineering and Technology.");
+                    addTerminalLine("Specializes in Full Stack Dev & AI Integration.");
+                } else if (lower === 'skills') {
+                    addTerminalLine("Full Stack, React, Node.js, ML/DL, Computer Vision, NLP, LLMs.");
+                    addTerminalLine("Python, C, JavaScript, HTML/CSS, Flask, MySQL, Supabase.");
+                    addTerminalLine("Tools: Git, Docker, VS Code, Jupyter, Figma.");
+                } else if (lower === 'contact') {
+                    addTerminalLine("Email: viswanthtechcs@gmail.com");
+                    addTerminalLine("Phone: 8668008781");
+                    addTerminalLine("LinkedIn: /in/viswanth-kanthapandiyan-s-a9048b344");
+                    addTerminalLine("GitHub: Viswanth5");
+                } else if (lower === 'github') { window.open('https://github.com/Viswanth5','_blank'); addTerminalLine("Opening GitHub..."); }
+                else if (lower === 'projects') {
+                    addTerminalLine("Finguard AI, Patient X, Tribal Earth 360, Custom Dashboard Builder, Skyline Digital, Gym Management UI, Framer Portfolio.");
+                } else if (lower === 'hackathons') {
+                    addTerminalLine("TechathonX’26 Runner-up, HackXios Winner, TECHXPLOSION’25 Runner-up, VibeHack Top 20, RYLA Best Leader.");
+                } else if (lower === 'experience') {
+                    addTerminalLine("Current: Full Stack Developer Intern at Technosprint.");
+                    addTerminalLine("Recent: AI/ML + Full Stack Intern at Cube AI.");
+                    addTerminalLine("Previous: UI/UX Designing Intern at Visnup Info Tech.");
+                    addTerminalLine("Previous: PANITH Innovations.");
+                } else if (lower === 'links') {
+                    addTerminalLine("GitHub: https://github.com/Viswanth5");
+                    addTerminalLine("LinkedIn: /in/viswanth-kanthapandiyan-s-a9048b344");
+                } else if (lower === 'date') addTerminalLine(new Date().toString());
+                else if (lower === 'whoami') addTerminalLine("You are Viswanth Kantha Pandiyan S.");
+                else if (lower === 'sudo') addTerminalLine("Root access already granted.");
+                else if (lower === 'theme') { document.body.classList.toggle('light-mode'); addTerminalLine("Theme toggled."); }
+                else if (lower === 'clear') { termOutput.innerHTML = ''; termInput.value = ''; return; }
+                else addTerminalLine(`Unknown command. Type 'help' for list.`);
+                termInput.value = '';
+            }
+        });
+
+        // ---------- 7. QUICK NAV INPUT ----------
+        const cmdInput = document.getElementById('ai-command');
+        cmdInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const val = cmdInput.value.toLowerCase();
+                if (val.includes('project')) document.querySelector('.mod-projects').scrollIntoView({behavior:'smooth'});
+                else if (val.includes('contact')) document.querySelector('.mod-contact').scrollIntoView({behavior:'smooth'});
+                else if (val.includes('status')) document.querySelector('.mod-status').scrollIntoView({behavior:'smooth'});
+                else if (val.includes('about')) document.querySelector('.mod-about').scrollIntoView({behavior:'smooth'});
+                else if (val.includes('education')) document.querySelector('.mod-education').scrollIntoView({behavior:'smooth'});
+                cmdInput.value = ">> Executing...";
+                setTimeout(() => { if(cmdInput.value.startsWith(">>")) cmdInput.value = ""; }, 1200);
+            }
+        });
+
+        // ---------- 8. KEYBOARD SHORTCUTS ----------
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'T') { e.preventDefault(); terminal.style.display = terminal.style.display === 'flex' ? 'none' : 'flex'; if(terminal.style.display==='flex') termInput.focus(); playClickSound(); }
+            if (e.ctrlKey && e.shiftKey && e.key === 'D') { e.preventDefault(); document.body.classList.toggle('light-mode'); playClickSound(); }
+        });
+
+        // ---------- INIT ----------
+        window.onload = function() {
+            typeWriter();
+        };
+    </script>
+</body>
+</html>
